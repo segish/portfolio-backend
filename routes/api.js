@@ -25,7 +25,9 @@ router.post('/projects', upload.single('image'), async (req, res) => {
             title: req.body.title,
             description: req.body.description,
             image: req.file.path,
-            keyFeatures: JSON.parse(req.body.keyFeatures)
+            keyFeatures: JSON.parse(req.body.keyFeatures),
+            githubLink: req.body.githubLink,
+            demoLink: req.body.demoLink
         });
         await project.save();
         res.status(201).json(project);
@@ -62,7 +64,9 @@ router.put('/projects/:id', upload.single('image'), async (req, res) => {
         const updateData = {
             title: req.body.title,
             description: req.body.description,
-            keyFeatures: JSON.parse(req.body.keyFeatures)
+            keyFeatures: JSON.parse(req.body.keyFeatures),
+            githubLink: req.body.githubLink,
+            demoLink: req.body.demoLink
         };
 
         if (req.file) {

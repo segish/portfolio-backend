@@ -17,10 +17,16 @@ const projectSchema = new mongoose.Schema({
         type: String,
         required: true
     }],
-    createdAt: {
-        type: Date,
-        default: Date.now
+    githubLink: {
+        type: String,
+        required: true
+    },
+    demoLink: {
+        type: String,
+        required: true
     }
+}, {
+    timestamps: true
 });
 
 module.exports = mongoose.model('Project', projectSchema); 
