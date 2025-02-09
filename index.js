@@ -20,7 +20,7 @@ app.use('/api', apiRoutes);
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)
     .then(() => console.log('MongoDB connected'))
-    .catch(err => console.log(err));
+    .catch(err => console.log('MongoDB connection error:', err));
 
 // Create uploads directories if they don't exist
 const uploadsDir = path.join(__dirname, 'uploads');
