@@ -34,12 +34,12 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Project routes
-router.post('/projects', upload.single('image'), async (req, res) => {
+router.post('/projects', async (req, res) => {
     try {
         const project = new Project({
             title: req.body.title,
             description: req.body.description,
-            image: req.file.path,
+            image: req.body.image,
             keyFeatures: JSON.parse(req.body.keyFeatures),
             githubLink: req.body.githubLink,
             demoLink: req.body.demoLink
@@ -69,7 +69,7 @@ router.get('/projects/:id', async (req, res) => {
     }
 });
 
-router.put('/projects/:id', upload.single('image'), async (req, res) => {
+router.put('/projects/:id', async (req, res) => {
     try {
         const project = await Project.findById(req.params.id);
         if (!project) {
@@ -84,10 +84,8 @@ router.put('/projects/:id', upload.single('image'), async (req, res) => {
             demoLink: req.body.demoLink
         };
 
-        if (req.file) {
-            // Delete old image before updating
-            deleteFile(project.image);
-            updateData.image = req.file.path;
+        if (req.body.image) {
+            updateData.image = req.body.image;
         }
 
         const updatedProject = await Project.findByIdAndUpdate(
@@ -107,9 +105,6 @@ router.delete('/projects/:id', async (req, res) => {
         if (!project) {
             return res.status(404).json({ message: 'Project not found' });
         }
-
-        // Delete the image file
-        deleteFile(project.image);
 
         // Delete the project from database
         await Project.findByIdAndDelete(req.params.id);
