@@ -1,9 +1,24 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
+const fs = require('fs');
+const path = require('path');
 const Project = require('../models/Project');
 const Resume = require('../models/Resume');
 const { deleteFile } = require('../utils/fileHelper');
+
+// Create upload directories if they don't exist
+const createUploadDirectories = () => {
+    const directories = ['uploads/resume', 'uploads/projects'];
+    directories.forEach(dir => {
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
+    });
+};
+
+// Create directories on startup
+createUploadDirectories();
 
 // Configure multer for file uploads
 const storage = multer.diskStorage({
